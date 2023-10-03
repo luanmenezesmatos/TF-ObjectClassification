@@ -3,26 +3,20 @@ from matplotlib import pyplot as plt
 from src.structures.translatePredsFunction import translatePredsFunction
 
 def plotFunction(image, preds):
-    plt.imshow(image)
-    plt.axis('off')
+    plt.imshow(image) # Mostrar imagem
+    plt.axis('off') # Desativar eixos
 
     # Traduzir as predições para português
-    # preds = translatePredsFunction([pr[1] for pr in preds])
-    # translatePredsFunction([pr[1] for pr in preds])
-    translatedWordsArr = []
-
-    for i in range(len(preds)):
-        translatedWordsArr.append(translatePredsFunction([pr[1] for pr in preds]))
-        print(translatedWordsArr[i])
+    translate = translatePredsFunction([pr[1] for pr in preds]) # [pr[1] for pr in preds] retorna uma lista com as predições em inglês
 
     # Gráfico de Barras
-    plt.figure()
-    order = list(reversed(range(len(preds))))
-    bar_preds = [pr[2] for pr in preds]
-    labels = (pr[1] for pr in preds)
-    plt.barh(order, bar_preds, alpha=0.5)
-    plt.yticks(order, labels)
-    plt.xlabel('Predição/Probabilidade')
-    plt.xlim(0, 1.01)
-    plt.tight_layout()
-    plt.show()
+    plt.figure() # Criar figura
+    order = list(reversed(range(len(preds)))) # Inverter a ordem da lista
+    bar_preds = [pr[2] for pr in preds] # Lista com as probabilidades das predições
+    labels = (tr for tr in translate) # Gerador de expressões para iterar sobre a lista translate
+    plt.barh(order, bar_preds, alpha=0.5) # Criar gráfico de barras
+    plt.yticks(order, labels) # Definir os rótulos do eixo y
+    plt.xlabel('Predição/Probabilidade') # Definir rótulo do eixo x
+    plt.xlim(0, 1.01) # Definir limites do eixo x
+    plt.tight_layout() # Ajustar layout
+    plt.show() # Mostrar gráfico

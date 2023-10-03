@@ -1,35 +1,19 @@
-from keras.preprocessing import image
-from keras.applications.resnet50 import ResNet50, preprocess_input, decode_predictions
+from keras.preprocessing import image # Importar módulo de pré-processamento de imagens do Keras
+from keras.applications.resnet50 import ResNet50, preprocess_input, decode_predictions # Importar modelo ResNet50, pré-processamento e decodificação de predições
 
-import numpy as np
+import numpy as np # Importar numpy
 
-model = ResNet50(weights='imagenet')
+model = ResNet50(weights='imagenet') # Carregar modelo ResNet50 com os pesos do ImageNet
 
+# Função para fazer a predição da imagem
 def predictFunction(img, target_size, top_n=3):
-    if img.size != target_size:
-        img = img.resize(target_size)
+    if img.size != target_size: # Verificar se o tamanho da imagem é diferente do tamanho que o modelo espera
+        img = img.resize(target_size) # Redimensionar a imagem
 
-    x = image.img_to_array(img)
-    x = np.expand_dims(x, axis=0)
-    x = preprocess_input(x)
+    x = image.img_to_array(img) # Converter a imagem para um array
+    x = np.expand_dims(x, axis=0) # Adicionar uma dimensão extra para o array
+    x = preprocess_input(x) # Pré-processar o array
 
-    preds = model.predict(x)
+    preds = model.predict(x) # Fazer a predição
 
-    return decode_predictions(preds, top=top_n)[0]
-
-    # img_option dará as opções de pegar a imagem do diretório local ou de uma URL
-    """ if img_option == 1:
-        img_path = input("Digite o caminho da imagem: ")
-
-        if not os.path.exists(img_path):
-            print("Imagem não encontrada! Tente novamente.")
-            return
-
-        img = image.load_img(img_path, target_size=(224, 224))
-        
-        # Rodar a imagem com o opencv
-        img = np.array(img)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        cv2.imshow("Imagem", img)
-        if cv2.waitKey(5) == 27:
-            cv2.destroyAllWindows() """
+    return decode_predictions(preds, top=top_n)[0] # Decodificar as predições e retornar apenas as top_n predições
